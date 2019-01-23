@@ -138,10 +138,10 @@ describe "Merchants API" do
   #   expect(random.count).to eq(1)
   #   expect(random["data"]["type"]).to eq("merchants")
   # end
-  it 'returns X merchants ranked by total revenue' do
+  xit 'returns X merchants ranked by total revenue' do
     m1, m2, m3, m4, m5 = create_list(:merchant)
 
-    item_1 
+    item_1
     item_2
     item_3
     item_4
