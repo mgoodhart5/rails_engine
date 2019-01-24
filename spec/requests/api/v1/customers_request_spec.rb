@@ -34,7 +34,7 @@ describe "Customers API" do
 
     expect(customer["data"]["id"]).to eq(id)
   end
-  it "can find one customer by name and specific path" do
+  it "can find one customer by first name and specific path" do
     first_name = create(:customer).first_name
 
     get "/api/v1/customers/find?first_name=#{first_name}"
@@ -43,9 +43,9 @@ describe "Customers API" do
 
     customer = JSON.parse(response.body)
 
-    expect(customer["data"]["attributes"]["first_name"]).to eq(first_name)
+    expect(customer["data"][0]["attributes"]["first_name"]).to eq(first_name)
   end
-  it "can find one customer by name and specific path" do
+  it "can find one customer by last name and specific path" do
     last_name = create(:customer).last_name
 
     get "/api/v1/customers/find?last_name=#{last_name}"
@@ -54,9 +54,9 @@ describe "Customers API" do
 
     customer = JSON.parse(response.body)
 
-    expect(customer["data"]["attributes"]["last_name"]).to eq(last_name)
+    expect(customer["data"][0]["attributes"]["last_name"]).to eq(last_name)
   end
-  xit "can find one customer by name case insensitive" do
+  it "can find one customer by name case insensitive" do
     first_name = create(:customer).first_name
 
     get "/api/v1/customers/find?first_name=#{first_name.upcase}"
@@ -65,29 +65,29 @@ describe "Customers API" do
 
     customer = JSON.parse(response.body)
 
-    expect(customer["data"]["attributes"]["last_name"]).to eq(last_name)
+    expect(customer["data"][0]["attributes"]["first_name"]).to eq(first_name)
   end
-  xit "can find a customer by created at" do
-    # first_name = create(:customer).first_name
-    #
-    # get "/api/v1/customers/find?first_name=#{first_name.upcase}"
-    #
-    # expect(response).to be_successful
-    #
-    # customer = JSON.parse(response.body)
+  it "can find a customer by created at" do
+    customer_1 = create(:customer, created_at: "2012-03-27 14:54:09 UTC")
 
-    expect(customer["data"]["attributes"]["last_name"]).to eq(last_name)
+    get "/api/v1/customers/find?created_at=#{customer_1.created_at}"
+
+    expect(response).to be_successful
+
+    customer = JSON.parse(response.body)
+
+    expect(customer["data"]["attributes"]["id"]).to eq(customer_1.id)
   end
-  xit "can find a customer by updated at" do
-    # first_name = create(:customer).first_name
-    #
-    # get "/api/v1/customers/find?first_name=#{first_name.upcase}"
-    #
-    # expect(response).to be_successful
-    #
-    # customer = JSON.parse(response.body)
-    #
-    # expect(customer["data"]["attributes"]["last_name"]).to eq(last_name)
+  it "can find a customer by updated at" do
+    customer_1 = create(:customer, updated_at: "2012-03-27 14:54:10 UTC")
+
+    get "/api/v1/customers/find?updated_at=#{customer_1.updated_at}"
+
+    expect(response).to be_successful
+
+    customer = JSON.parse(response.body)
+
+    expect(customer["data"]["attributes"]["id"]).to eq(customer_1.id)
   end
   it "can find all customers" do
     customers = create_list(:customer, 3)
@@ -137,5 +137,31 @@ describe "Customers API" do
 
     expect(random.count).to eq(1)
     expect(random["data"]["type"]).to eq("customer")
+  end
+  it "can find all customers by created at" do
+    customer_1 = create(:customer, created_at: "2012-03-27 14:54:09 UTC")
+    customer_2 = create(:customer, created_at: "2012-03-27 14:54:09 UTC")
+    customer_3 = create(:customer, created_at: "2012-03-25 14:54:09 UTC")
+
+    get "/api/v1/customers/find_all?created_at=#{customer_1.created_at}"
+
+    expect(response).to be_successful
+
+    customers = JSON.parse(response.body)
+
+    expect(customers["data"].count).to eq(2)
+  end
+  it "can find all customers by updated at" do
+    customer_1 = create(:customer, updated_at: "2012-03-27 14:54:09 UTC")
+    customer_2 = create(:customer, updated_at: "2012-03-27 14:54:09 UTC")
+    customer_3 = create(:customer, updated_at: "2012-03-25 14:54:09 UTC")
+
+    get "/api/v1/customers/find_all?updated_at=#{customer_1.updated_at}"
+
+    expect(response).to be_successful
+
+    customers = JSON.parse(response.body)
+
+    expect(customers["data"].count).to eq(2)
   end
 end
