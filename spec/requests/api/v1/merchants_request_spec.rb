@@ -23,50 +23,39 @@ describe "Merchants API" do
 
     expect(merchants["data"]["id"]).to eq(id)
   end
-  # it "can find one merchants by id and specific path" do
-  #   id = create(:merchants).id.to_s
-  #
-  #   get "/api/v1/merchants/find?id=#{id}"
-  #
-  #   expect(response).to be_successful
-  #
-  #   merchants = JSON.parse(response.body)
-  #
-  #   expect(merchants["data"]["id"]).to eq(id)
-  # end
-  # it "can find one merchants by name and specific path" do
-  #   first_name = create(:merchants).first_name
-  #
-  #   get "/api/v1/merchants/find?first_name=#{first_name}"
-  #
-  #   expect(response).to be_successful
-  #
-  #   merchants = JSON.parse(response.body)
-  #
-  #   expect(merchants["data"]["attributes"]["first_name"]).to eq(first_name)
-  # end
-  # it "can find one merchants by name and specific path" do
-  #   last_name = create(:merchants).last_name
-  #
-  #   get "/api/v1/merchants/find?last_name=#{last_name}"
-  #
-  #   expect(response).to be_successful
-  #
-  #   merchants = JSON.parse(response.body)
-  #
-  #   expect(merchants["data"]["attributes"]["last_name"]).to eq(last_name)
-  # end
-  # xit "can find one merchants by name case insensitive" do
-  #   first_name = create(:merchants).first_name
-  #
-  #   get "/api/v1/merchants/find?first_name=#{first_name.upcase}"
-  #
-  #   expect(response).to be_successful
-  #
-  #   merchants = JSON.parse(response.body)
-  #
-  #   expect(merchants["data"]["attributes"]["last_name"]).to eq(last_name)
-  # end
+  it "can find one merchant by id and specific path" do
+    id = create(:merchant).id.to_s
+
+    get "/api/v1/merchants/find?id=#{id}"
+
+    expect(response).to be_successful
+
+    merchant = JSON.parse(response.body)
+
+    expect(merchant["data"]["id"]).to eq(id)
+  end
+  it "can find one merchants by name and specific path" do
+    name = create(:merchant).name
+
+    get "/api/v1/merchants/find?name=#{name}"
+
+    expect(response).to be_successful
+
+    merchants = JSON.parse(response.body)
+
+    expect(merchants["data"][0]["attributes"]["name"]).to eq(name)
+  end
+  it "can find one merchants by name case insensitive" do
+    name = create(:merchant).name
+
+    get "/api/v1/merchants/find?name=#{name.upcase}"
+
+    expect(response).to be_successful
+
+    merchant = JSON.parse(response.body)
+
+    expect(merchant["data"][0]["attributes"]["name"]).to eq(name)
+  end
   # xit "can find a merchants by created at" do
   #   # first_name = create(:merchants).first_name
   #   #

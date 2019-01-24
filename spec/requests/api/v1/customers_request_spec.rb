@@ -34,7 +34,7 @@ describe "Customers API" do
 
     expect(customer["data"]["id"]).to eq(id)
   end
-  it "can find one customer by name and specific path" do
+  it "can find one customer by first name and specific path" do
     first_name = create(:customer).first_name
 
     get "/api/v1/customers/find?first_name=#{first_name}"
@@ -43,9 +43,9 @@ describe "Customers API" do
 
     customer = JSON.parse(response.body)
 
-    expect(customer["data"]["attributes"]["first_name"]).to eq(first_name)
+    expect(customer["data"][0]["attributes"]["first_name"]).to eq(first_name)
   end
-  it "can find one customer by name and specific path" do
+  it "can find one customer by last name and specific path" do
     last_name = create(:customer).last_name
 
     get "/api/v1/customers/find?last_name=#{last_name}"
@@ -54,9 +54,9 @@ describe "Customers API" do
 
     customer = JSON.parse(response.body)
 
-    expect(customer["data"]["attributes"]["last_name"]).to eq(last_name)
+    expect(customer["data"][0]["attributes"]["last_name"]).to eq(last_name)
   end
-  xit "can find one customer by name case insensitive" do
+  it "can find one customer by name case insensitive" do
     first_name = create(:customer).first_name
 
     get "/api/v1/customers/find?first_name=#{first_name.upcase}"
@@ -65,7 +65,7 @@ describe "Customers API" do
 
     customer = JSON.parse(response.body)
 
-    expect(customer["data"]["attributes"]["last_name"]).to eq(last_name)
+    expect(customer["data"][0]["attributes"]["first_name"]).to eq(first_name)
   end
   xit "can find a customer by created at" do
     # first_name = create(:customer).first_name
