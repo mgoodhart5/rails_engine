@@ -43,9 +43,9 @@ describe "Merchants API" do
 
     merchants = JSON.parse(response.body)
 
-    expect(merchants["data"][0]["attributes"]["name"]).to eq(name)
+    expect(merchants["data"]["attributes"]["name"]).to eq(name)
   end
-  it "can find one merchants by name case insensitive" do
+  it "can find one merchant by name case insensitive" do
     name = create(:merchant).name
 
     get "/api/v1/merchants/find?name=#{name.upcase}"
@@ -54,79 +54,81 @@ describe "Merchants API" do
 
     merchant = JSON.parse(response.body)
 
-    expect(merchant["data"][0]["attributes"]["name"]).to eq(name)
+    expect(merchant["data"]["attributes"]["name"]).to eq(name)
   end
-  # xit "can find a merchants by created at" do
-  #   # first_name = create(:merchants).first_name
-  #   #
-  #   # get "/api/v1/merchants/find?first_name=#{first_name.upcase}"
-  #   #
-  #   # expect(response).to be_successful
-  #   #
-  #   # merchants = JSON.parse(response.body)
-  #
-  #   expect(merchants["data"]["attributes"]["last_name"]).to eq(last_name)
-  # end
-  # xit "can find a merchants by updated at" do
-  #   # first_name = create(:merchants).first_name
-  #   #
-  #   # get "/api/v1/merchants/find?first_name=#{first_name.upcase}"
-  #   #
-  #   # expect(response).to be_successful
-  #   #
-  #   # merchants = JSON.parse(response.body)
-  #   #
-  #   # expect(merchants["data"]["attributes"]["last_name"]).to eq(last_name)
-  # end
-  # it "can find all merchants" do
-  #   merchants = create_list(:merchants, 3)
-  #
-  #   get "/api/v1/merchants/find_all?id=#{merchants.last.id}"
-  #
-  #   expect(response).to be_successful
-  #
-  #   merchants = JSON.parse(response.body)
-  #
-  #   expect(merchants.count).to eq(1)
-  # end
-  # it "can find all merchants by first_name" do
-  #   merchants_1  = create(:merchants, first_name: "Mary")
-  #   merchants_2  = create(:merchants, first_name: "Mary")
-  #   merchants_3  = create(:merchants, first_name: "Jes")
-  #
-  #   get "/api/v1/merchants/find_all?first_name=#{merchants_1.first_name}"
-  #
-  #   expect(response).to be_successful
-  #
-  #   merchants = JSON.parse(response.body)
-  #
-  #   expect(merchants["data"].count).to eq(2)
-  # end
-  # it "can find all merchants by last_name" do
-  #   merchants_1  = create(:merchants, last_name: "Perez")
-  #   merchants_2  = create(:merchants, last_name: "Perez")
-  #   merchants_3  = create(:merchants, last_name: "Smith")
-  #
-  #   get "/api/v1/merchants/find_all?last_name=#{merchants_1.last_name}"
-  #
-  #   expect(response).to be_successful
-  #
-  #   merchants = JSON.parse(response.body)
-  #
-  #   expect(merchants["data"].count).to eq(2)
-  # end
-  # it "can call a random resource" do
-  #   create_list(:merchants, 3)
-  #
-  #   get "/api/v1/merchants/random.json"
-  #
-  #   expect(response).to be_successful
-  #
-  #   random = JSON.parse(response.body)
-  #
-  #   expect(random.count).to eq(1)
-  #   expect(random["data"]["type"]).to eq("merchants")
-  # end
+  it "can find a merchant by created at" do
+    merchant_1 = create(:merchant, created_at: "2012-03-27 14:54:09 UTC")
+
+    get "/api/v1/merchants/find?created_at=#{merchant_1.created_at}"
+
+    expect(response).to be_successful
+
+    merchant = JSON.parse(response.body)
+
+    expect(merchant["data"]["attributes"]["id"]).to eq(merchant_1.id)
+  end
+  it "can find a merchant by updated at" do
+    merchant_1 = create(:merchant, updated_at: "2012-03-27 14:54:10 UTC")
+
+    get "/api/v1/merchants/find?updated_at=#{merchant_1.updated_at}"
+
+    expect(response).to be_successful
+
+    merchant = JSON.parse(response.body)
+
+    expect(merchant["data"]["attributes"]["id"]).to eq(merchant_1.id)
+  end
+  it "can find all merchant by created at" do
+    merchant_1 = create(:merchant, created_at: "2012-03-27 14:54:09 UTC")
+    merchant_2 = create(:merchant, created_at: "2012-03-27 14:54:09 UTC")
+    merchant_3 = create(:merchant, created_at: "2012-03-25 14:54:09 UTC")
+
+    get "/api/v1/merchants/find_all?created_at=#{merchant_1.created_at}"
+
+    expect(response).to be_successful
+
+    merchant = JSON.parse(response.body)
+
+    expect(merchant["data"].count).to eq(2)
+  end
+  it "can find all merchants by last_name" do
+    merchant_1  = create(:merchant, name: "Perez")
+    merchant_2  = create(:merchant, name: "Perez")
+    merchant_3  = create(:merchant, name: "Smith")
+
+    get "/api/v1/merchants/find_all?name=#{merchant_1.name}"
+
+    expect(response).to be_successful
+
+    merchants = JSON.parse(response.body)
+
+    expect(merchants["data"].count).to eq(2)
+  end
+  it "can find all merchant by updated at" do
+    merchant_1 = create(:merchant, updated_at: "2012-03-27 14:54:09 UTC")
+    merchant_2 = create(:merchant, updated_at: "2012-03-27 14:54:09 UTC")
+    merchant_3 = create(:merchant, updated_at: "2012-03-25 14:54:09 UTC")
+
+    get "/api/v1/merchants/find_all?updated_at=#{merchant_1.updated_at}"
+
+    expect(response).to be_successful
+
+    merchant = JSON.parse(response.body)
+
+    expect(merchant["data"].count).to eq(2)
+  end
+  it "can call a random resource" do
+    create_list(:merchant, 3)
+
+    get "/api/v1/merchants/random.json"
+
+    expect(response).to be_successful
+
+    random = JSON.parse(response.body)
+
+    expect(random.count).to eq(1)
+    expect(random["data"]["type"]).to eq("merchant")
+  end
   it 'returns X merchants ranked by total revenue' do
 
     m1, m2, m3, m4, m5 = create_list(:merchant, 5)
@@ -160,5 +162,72 @@ describe "Merchants API" do
     merchants = JSON.parse(response.body)
     expect(response).to be_successful
     expect(merchants["data"].count).to eq(x)
+  end
+  it 'calculates total items sold for X merchants' do
+    m1, m2, m3, m4, m5 = create_list(:merchant, 5)
+
+    item_1 = create(:item, merchant: m1, unit_price: 400)
+    item_2 = create(:item, merchant: m2, unit_price: 300)
+    item_3 = create(:item, merchant: m3, unit_price: 500)
+    item_4 = create(:item, merchant: m4, unit_price: 100)
+    item_5 = create(:item, merchant: m5, unit_price: 1500)
+
+    invoice_1 = create(:invoice, merchant: m5)
+    invoice_2 = create(:invoice, merchant: m3)
+    invoice_3 = create(:invoice, merchant: m1)
+    invoice_4 = create(:invoice, merchant: m4)
+    invoice_5 = create(:invoice, merchant: m2)
+
+    invoice_item_1 = create(:invoice_item, quantity: 10, unit_price: 1500, item_id: item_5.id, invoice_id: invoice_1.id)
+    invoice_item_2 = create(:invoice_item, quantity: 15, unit_price: 500, item_id: item_3.id, invoice_id: invoice_2.id)
+    invoice_item_3 = create(:invoice_item, quantity: 20, unit_price: 400, item_id: item_1.id, invoice_id: invoice_3.id)
+    invoice_item_4 = create(:invoice_item, quantity: 5, unit_price: 100, item_id: item_4.id, invoice_id: invoice_4.id)
+
+    transaction_1 = create(:transaction, invoice_id: invoice_1.id, result: "success")
+    transaction_2 = create(:transaction, invoice_id: invoice_2.id, result: "success")
+    transaction_3 = create(:transaction, invoice_id: invoice_3.id, result: "success")
+    transaction_4 = create(:transaction, invoice_id: invoice_4.id, result: "success")
+
+    x1 = 3
+
+    get "/api/v1/merchants/most_items?quantity=#{x1}"
+
+    merchants = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(merchants["data"].count).to eq(x1)
+  end
+  it 'returns total merchants who sold on X date' do
+    m1, m2, m3, m4, m5 = create_list(:merchant, 5)
+
+    item_1 = create(:item, merchant: m1, unit_price: 400)
+    item_2 = create(:item, merchant: m2, unit_price: 300)
+    item_3 = create(:item, merchant: m3, unit_price: 500)
+    item_4 = create(:item, merchant: m4, unit_price: 100)
+    item_5 = create(:item, merchant: m5, unit_price: 1500)
+
+    invoice_1 = create(:invoice, merchant: m5)
+    invoice_2 = create(:invoice, merchant: m3)
+    invoice_3 = create(:invoice, merchant: m1)
+    invoice_4 = create(:invoice, merchant: m4)
+    invoice_5 = create(:invoice, merchant: m2)
+
+    invoice_item_1 = create(:invoice_item, quantity: 1, unit_price: 1500, item_id: item_5.id, invoice_id: invoice_1.id)
+    invoice_item_2 = create(:invoice_item, quantity: 2, unit_price: 500, item_id: item_3.id, invoice_id: invoice_2.id)
+    invoice_item_3 = create(:invoice_item, quantity: 3, unit_price: 400, item_id: item_1.id, invoice_id: invoice_3.id)
+    invoice_item_4 = create(:invoice_item, quantity: 5, unit_price: 100, item_id: item_4.id, invoice_id: invoice_4.id)
+
+    transaction_1 = create(:transaction, invoice_id: invoice_1.id, result: "success", updated_at: "2012-03-27 14:54:09 UTC")
+    transaction_2 = create(:transaction, invoice_id: invoice_2.id, result: "success", updated_at: "2012-03-27 14:54:09 UTC")
+    transaction_3 = create(:transaction, invoice_id: invoice_3.id, result: "success", updated_at: "2012-03-27 14:54:09 UTC")
+    transaction_4 = create(:transaction, invoice_id: invoice_4.id, result: "success", updated_at: "2012-03-25 14:54:09 UTC")
+
+    x1 = "2012-03-27 14:54:09 UTC"
+
+    get "/api/v1/merchants/revenue?date=#{x1}"
+
+    merchants = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(merchants["revenue"]).to eq(x1)
   end
 end
