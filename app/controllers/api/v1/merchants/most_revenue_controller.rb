@@ -4,4 +4,5 @@ class Api::V1::Merchants::MostRevenueController < ApplicationController
     merchants = Merchant.most_revenue(params[:quantity])
     render json: MerchantSerializer.new(merchants)
   end
+  
 end

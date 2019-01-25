@@ -43,7 +43,7 @@ describe "Customers API" do
 
     customer = JSON.parse(response.body)
 
-    expect(customer["data"][0]["attributes"]["first_name"]).to eq(first_name)
+    expect(customer["data"]["attributes"]["first_name"]).to eq(first_name)
   end
   it "can find one customer by last name and specific path" do
     last_name = create(:customer).last_name
@@ -54,7 +54,7 @@ describe "Customers API" do
 
     customer = JSON.parse(response.body)
 
-    expect(customer["data"][0]["attributes"]["last_name"]).to eq(last_name)
+    expect(customer["data"]["attributes"]["last_name"]).to eq(last_name)
   end
   it "can find one customer by name case insensitive" do
     first_name = create(:customer).first_name
@@ -65,7 +65,7 @@ describe "Customers API" do
 
     customer = JSON.parse(response.body)
 
-    expect(customer["data"][0]["attributes"]["first_name"]).to eq(first_name)
+    expect(customer["data"]["attributes"]["first_name"]).to eq(first_name)
   end
   it "can find a customer by created at" do
     customer_1 = create(:customer, created_at: "2012-03-27 14:54:09 UTC")
