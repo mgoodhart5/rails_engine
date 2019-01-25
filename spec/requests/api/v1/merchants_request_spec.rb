@@ -228,6 +228,7 @@ describe "Merchants API" do
     merchants = JSON.parse(response.body)
 
     expect(response).to be_successful
-    expect(merchants["revenue"]).to eq(x1)
+    # binding.pry
+    expect(merchants["revenue_per_date"]["all_merchants"]).to eq(Merchant.revenue(x1))
   end
 end

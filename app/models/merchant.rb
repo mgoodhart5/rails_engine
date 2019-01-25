@@ -23,10 +23,11 @@ class Merchant < ApplicationRecord
   end
 
   def self.revenue(x)
-    Merchant.joins(invoices: [:invoice_items, :transactions])
+    money = Merchant.joins(invoices: [:invoice_items, :transactions])
     .where("transactions.result = 0")
     .where("transactions.updated_at = ?", x)
     .sum("invoice_items.unit_price * invoice_items.quantity")
+    # (money/100).round(2)
   end
 
 end
