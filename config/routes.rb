@@ -14,10 +14,11 @@ Rails.application.routes.draw do
         get '/random', to: "random#show"
         get '/most_items', to: "most_items#index"
         get '/revenue', to: "revenue#index"
+        get ':id/revenue', to: "revenue#show"
       end
       resources :customers, only: [:index, :show]
       resources :merchants, only: [:index, :show]
-      resources :items, only: [:index]
+      resources :items, only: [:index, :show]
     end
   end
 end
