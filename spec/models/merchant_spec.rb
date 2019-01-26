@@ -108,4 +108,29 @@ RSpec.describe Merchant, type: :model do
 
     expect(answer_rev).to eq(total)
   end
+  describe 'instance methods'do
+    it "returns the total revenue for a single merchant successful transaction" do
+      m1 = create(:merchant)
+
+      item_1 = create(:item, merchant: m1, unit_price: 400)
+      item_2 = create(:item, merchant: m1, unit_price: 300)
+      item_3 = create(:item, merchant: m1, unit_price: 500)
+
+      invoice_1 = create(:invoice, merchant: m1)
+      invoice_2 = create(:invoice, merchant: m1)
+      invoice_3 = create(:invoice, merchant: m1)
+
+      invoice_item_1 = create(:invoice_item, quantity: 1, unit_price: 1500, item_id: item_2.id, invoice_id: invoice_1.id)
+      invoice_item_2 = create(:invoice_item, quantity: 2, unit_price: 500, item_id: item_3.id, invoice_id: invoice_2.id)
+      invoice_item_3 = create(:invoice_item, quantity: 3, unit_price: 400, item_id: item_1.id, invoice_id: invoice_3.id)
+
+      transaction_1 = create(:transaction, invoice_id: invoice_1.id, result: "success", updated_at: "2012-03-27 14:54:09 UTC")
+      transaction_2 = create(:transaction, invoice_id: invoice_2.id, result: "success", updated_at: "2012-03-27 14:54:09 UTC")
+      transaction_3 = create(:transaction, invoice_id: invoice_3.id, result: "failed", updated_at: "2012-03-27 14:54:09 UTC")
+
+      total_rev = 2500
+
+      expect(m1.total_revenue).to eq(total_rev)
+    end
+  end
 end
