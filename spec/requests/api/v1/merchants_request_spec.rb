@@ -260,4 +260,35 @@ describe "Merchants API" do
 
     expect(merchant["data"]["id"]).to eq(m1.id)
   end
+  it "returns the favorite customer for a single merchant" do
+    m1 = create(:merchant)
+    c1 = create(:customer)
+    c2 = create(:customer)
+
+    item_1 = create(:item, merchant: m1, unit_price: 400)
+    item_2 = create(:item, merchant: m1, unit_price: 300)
+    item_3 = create(:item, merchant: m1, unit_price: 500)
+
+    invoice_1 = create(:invoice, merchant: m1, customer: c1)
+    invoice_2 = create(:invoice, merchant: m1, customer: c2)
+    invoice_3 = create(:invoice, merchant: m1, customer: c2)
+
+    invoice_item_1 = create(:invoice_item, quantity: 1, unit_price: 1500, item_id: item_2.id, invoice_id: invoice_1.id)
+    invoice_item_2 = create(:invoice_item, quantity: 2, unit_price: 500, item_id: item_3.id, invoice_id: invoice_2.id)
+    invoice_item_3 = create(:invoice_item, quantity: 3, unit_price: 400, item_id: item_1.id, invoice_id: invoice_3.id)
+
+    transaction_1 = create(:transaction, invoice_id: invoice_1.id, result: "success", updated_at: "2012-03-27 14:54:09 UTC")
+    transaction_2 = create(:transaction, invoice_id: invoice_2.id, result: "success", updated_at: "2012-03-27 14:54:09 UTC")
+    transaction_3 = create(:transaction, invoice_id: invoice_3.id, result: "success", updated_at: "2012-03-27 14:54:09 UTC")
+
+
+    get "/api/v1/merchants/#{m1.id}/favorite_customer"
+
+    favorite_cust = JSON.parse(response.body)
+
+    expect(response).to be_successful
+
+    expect(favorite_cust["data"][0]["id"].to_i).to eq(c2.id)
+    expect(favorite_cust["data"][0]["id"].to_i).to_not eq(c1.id)
+  end
 end

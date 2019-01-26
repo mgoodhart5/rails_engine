@@ -13,5 +13,6 @@ class Customer < ApplicationRecord
     .order("transaction_amount desc")
     .where("invoices.customer_id = #{self.id}")
     .limit(1)
+    #serialize
   end
 end

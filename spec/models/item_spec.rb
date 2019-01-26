@@ -78,7 +78,7 @@ RSpec.describe Item, type: :model do
     expect(answer[1]).to eq(item_3)
     expect(answer[2]).to eq(item_5)
   end
-  # it "best day" do
-  #
-  # end
+  it "best day" do
+
+  end
 end

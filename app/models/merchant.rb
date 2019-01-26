@@ -41,7 +41,6 @@ class Merchant < ApplicationRecord
     .where(transactions: {result: 0}, merchants: {id: self.id})
     .where("invoices.updated_at = ?", x)
     .sum("invoice_items.unit_price * invoice_items.quantity")
-    #serialize
   end
 
   def favorite_customer
@@ -52,6 +51,7 @@ class Merchant < ApplicationRecord
     .order("transaction_amount desc")
     .where("invoices.merchant_id = #{self.id}")
     .limit(1)
+    #serialize
   end
 
 end
