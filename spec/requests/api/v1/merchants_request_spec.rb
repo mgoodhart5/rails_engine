@@ -257,7 +257,7 @@ describe "Merchants API" do
     merchant = JSON.parse(response.body)
 
     expect(response).to be_successful
-    binding.pry
-    expect(merchant["data"]["merchant"]["id"]).to eq(m1.id)
+
+    expect(merchant["data"]["id"]).to eq(m1.id)
   end
 end

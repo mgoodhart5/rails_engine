@@ -132,5 +132,60 @@ RSpec.describe Merchant, type: :model do
 
       expect(m1.total_revenue).to eq(total_rev)
     end
+    it 'returns total of one merchant who sold on X date' do
+      m1 = create(:merchant)
+
+      item_1 = create(:item, merchant: m1, unit_price: 400)
+      item_2 = create(:item, merchant: m1, unit_price: 300)
+      item_3 = create(:item, merchant: m1, unit_price: 500)
+
+      invoice_1 = create(:invoice, merchant: m1, updated_at: "2012-03-25 14:54:09 UTC")
+      invoice_2 = create(:invoice, merchant: m1, updated_at: "2012-03-25 14:54:09 UTC")
+      invoice_3 = create(:invoice, merchant: m1, updated_at: "2012-03-27 14:54:09 UTC")
+
+      invoice_item_1 = create(:invoice_item, quantity: 1, unit_price: 1500, item_id: item_2.id, invoice_id: invoice_1.id)
+      invoice_item_2 = create(:invoice_item, quantity: 2, unit_price: 500, item_id: item_3.id, invoice_id: invoice_2.id)
+      invoice_item_3 = create(:invoice_item, quantity: 3, unit_price: 400, item_id: item_1.id, invoice_id: invoice_3.id)
+
+
+      transaction_1 = create(:transaction, invoice_id: invoice_1.id, result: "success", updated_at: "2012-03-25 14:54:09 UTC")
+      transaction_2 = create(:transaction, invoice_id: invoice_2.id, result: "success", updated_at: "2012-03-25 14:54:09 UTC")
+      transaction_3 = create(:transaction, invoice_id: invoice_3.id, result: "failed", updated_at: "2012-03-27 14:54:09 UTC")
+
+
+      x = "2012-03-25 14:54:09 UTC"
+
+      total = 2500
+
+      answer_rev = m1.revenue_by_date(x)
+
+      expect(answer_rev).to eq(total)
+    end
+    it 'returns customer with most successful transactions' do
+      customer = create(:customer)
+      customer_2 = create(:customer)
+      m1 = create(:merchant)
+
+      item_1 = create(:item, merchant: m1, unit_price: 400)
+      item_2 = create(:item, merchant: m1, unit_price: 300)
+      item_3 = create(:item, merchant: m1, unit_price: 500)
+
+      invoice_1 = create(:invoice, customer: customer, merchant: m1)
+      invoice_2 = create(:invoice, customer: customer, merchant: m1)
+      invoice_3 = create(:invoice, customer: customer_2, merchant: m1)
+
+      invoice_item_1 = create(:invoice_item, quantity: 1, unit_price: 1500, item_id: item_2.id, invoice_id: invoice_1.id)
+      invoice_item_2 = create(:invoice_item, quantity: 2, unit_price: 500, item_id: item_3.id, invoice_id: invoice_2.id)
+      invoice_item_3 = create(:invoice_item, quantity: 3, unit_price: 400, item_id: item_1.id, invoice_id: invoice_3.id)
+
+
+      transaction_1 = create(:transaction, invoice_id: invoice_1.id, result: "success")
+      transaction_2 = create(:transaction, invoice_id: invoice_2.id, result: "success")
+      transaction_3 = create(:transaction, invoice_id: invoice_3.id, result: "success")
+
+      fav = customer
+
+      expect(m1.favorite_customer).to eq([fav])
+    end
   end
 end
