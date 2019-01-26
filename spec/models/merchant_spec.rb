@@ -161,7 +161,7 @@ RSpec.describe Merchant, type: :model do
 
       expect(answer_rev).to eq(total)
     end
-    it 'returns customer with most successful transactions' do
+    it 'returns fav customer with most successful transactions' do
       customer = create(:customer)
       customer_2 = create(:customer)
       m1 = create(:merchant)
