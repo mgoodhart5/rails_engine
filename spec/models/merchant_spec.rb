@@ -161,9 +161,9 @@ RSpec.describe Merchant, type: :model do
 
       expect(answer_rev).to eq(total)
     end
-    it 'returns customer with most successful transactions' do
-      customer = create(:customer)
-      customer_2 = create(:customer)
+    it 'returns fav customer with most successful transactions' do
+      customer = create(:customer, first_name: "Mary")
+      customer_2 = create(:customer, first_name: "Leigh")
       m1 = create(:merchant)
 
       item_1 = create(:item, merchant: m1, unit_price: 400)
@@ -171,7 +171,7 @@ RSpec.describe Merchant, type: :model do
       item_3 = create(:item, merchant: m1, unit_price: 500)
 
       invoice_1 = create(:invoice, customer: customer, merchant: m1)
-      invoice_2 = create(:invoice, customer: customer, merchant: m1)
+      invoice_2 = create(:invoice, customer: customer_2, merchant: m1)
       invoice_3 = create(:invoice, customer: customer_2, merchant: m1)
 
       invoice_item_1 = create(:invoice_item, quantity: 1, unit_price: 1500, item_id: item_2.id, invoice_id: invoice_1.id)
@@ -183,7 +183,7 @@ RSpec.describe Merchant, type: :model do
       transaction_2 = create(:transaction, invoice_id: invoice_2.id, result: "success")
       transaction_3 = create(:transaction, invoice_id: invoice_3.id, result: "success")
 
-      fav = customer
+      fav = customer_2
 
       expect(m1.favorite_customer).to eq([fav])
     end

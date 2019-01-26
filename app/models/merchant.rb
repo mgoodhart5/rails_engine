@@ -44,11 +44,14 @@ class Merchant < ApplicationRecord
   end
 
   def favorite_customer
-    Customer.joins(merchants: [invoices: :transactions])
-    .where(transactions: {result: 0}, merchants: {id: self.id})
+    Customer.joins(invoices: :transactions)
+    .select("customers.*, count(transactions.id) as transaction_amount")
+    .where(transactions: {result: 0})
     .group("customers.id")
+    .order("transaction_amount desc")
+    .where("invoices.merchant_id = #{self.id}")
     .limit(1)
-    #returning as an array, does this work with serializing?
+    #serialize
   end
 
 end
