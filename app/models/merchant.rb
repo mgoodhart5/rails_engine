@@ -41,19 +41,16 @@ class Merchant < ApplicationRecord
     .where(transactions: {result: 0}, merchants: {id: self.id})
     .where("invoices.updated_at = ?", x)
     .sum("invoice_items.unit_price * invoice_items.quantity")
-    #serialize
   end
 
   def favorite_customer
-    Customer.joins(merchants: [invoices: :transactions])
-    .where(transactions: {result: 0}, merchants: {id: self.id})
+    Customer.joins(invoices: :transactions)
+    .select("customers.*, count(transactions.id) as transaction_amount")
+    .where(transactions: {result: 0})
     .group("customers.id")
-    .order("customers.id desc")
+    .order("transaction_amount desc")
+    .where("invoices.merchant_id = #{self.id}")
     .limit(1)
-    # .select("merchants.*, sum(invoice_items.quantity) as most_items")
-
-    # SELECT in here since it's based on amount of successful transactions
-    #returning as an array, does this work with serializing?
     #serialize
   end
 
