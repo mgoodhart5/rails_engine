@@ -312,4 +312,29 @@ describe 'merchants nested API' do
     expect(invoices["data"]["id"].to_i).to eq(invoice_2.id)
     expect(invoices["data"]["type"]).to eq("associated_invoice")
   end
+  it 'returns a collection of invoices associated with that customer' do
+    m1, m2 = create_list(:merchant, 2)
+    c1 = create(:customer)
+    c2 = create(:customer)
+
+    item_1 = create(:item, merchant: m1)
+    item_2 = create(:item, merchant: m1)
+    item_3 = create(:item, merchant: m2)
+
+    invoice_1 = create(:invoice, merchant: m1, customer: c1)
+    invoice_2 = create(:invoice, merchant: m1, customer: c1)
+    invoice_3 = create(:invoice, merchant: m2, customer: c2)
+
+    get "/api/v1/customers/#{c1.id}/invoices"
+
+    invoices = JSON.parse(response.body)
+
+    x = 2
+
+    expect(response).to be_successful
+
+    expect(invoices["data"].count).to eq(x)
+
+    expect(invoices["data"][0]["type"]).to eq("associated_invoice")
+  end
 end
