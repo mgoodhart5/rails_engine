@@ -14,4 +14,10 @@ class Customer < ApplicationRecord
     .where("invoices.customer_id = #{self.id}")
     .limit(1)
   end
+
+  def all_transactions
+    invoices.map do |invoice|
+      Transaction.where(invoice_id: invoice.id)
+    end.flatten
+  end
 end
