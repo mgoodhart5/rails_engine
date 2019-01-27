@@ -91,7 +91,7 @@ describe "Items API" do
 
     expect(item["data"].count).to eq(2)
   end
-  it "can find all items by last_name" do
+  it "can find all items by name" do
     item_1  = create(:item, name: "Perez")
     item_2  = create(:item, name: "Perez")
     item_3  = create(:item, name: "Smith")
@@ -103,6 +103,20 @@ describe "Items API" do
     items = JSON.parse(response.body)
 
     expect(items["data"].count).to eq(2)
+  end
+  it "can find all items by merchant_id" do
+    m1 = create(:merchant)
+    item_1  = create(:item, name: "Perez", merchant: m1)
+    item_2  = create(:item, name: "Perez", merchant: m1)
+    item_3  = create(:item, name: "Smith", merchant: m1)
+
+    get "/api/v1/items/find_all?merchant=#{m1.id}"
+
+    expect(response).to be_successful
+
+    items = JSON.parse(response.body)
+
+    expect(items["data"].count).to eq(3)
   end
   it "can find all item by updated at" do
     item_1 = create(:item, updated_at: "2012-03-27 14:54:09 UTC")
