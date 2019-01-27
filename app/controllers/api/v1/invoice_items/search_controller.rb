@@ -2,7 +2,7 @@ class Api::V1::InvoiceItems::SearchController < ApplicationController
 
   def index
     if params[:id]
-      render json: InvoiceItemSerializer.new(InvoiceItem.find_by(id: params[:id]))
+      render json: InvoiceItemSerializer.new(InvoiceItem.where(id: params[:id]))
     elsif params[:quantity]
       render json: InvoiceItemSerializer.new(InvoiceItem.where(quantity: params[:quantity]))
     elsif params[:created_at]

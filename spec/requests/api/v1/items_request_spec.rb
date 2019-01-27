@@ -172,7 +172,7 @@ describe "Items API" do
 
     expect(response).to be_successful
 
-    expect(item["data"][0]["attributes"]["updated_at"][0..9]).to eq(date[0..9])
+    expect(item["data"]["attributes"]["best_day"][0..9]).to eq(date[0..9])
     #this is not a cute test
   end
   it '.most_revenue' do

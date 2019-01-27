@@ -2,7 +2,7 @@ class Api::V1::Items::SearchController < ApplicationController
 
   def index
     if params[:id]
-      render json: ItemSerializer.new(Item.find_by(id: params[:id]))
+      render json: ItemSerializer.new(Item.where(id: params[:id]))
     elsif params[:name]
       render json: ItemSerializer.new(Item.where(name: params[:name]))
     elsif params[:created_at]

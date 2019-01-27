@@ -188,12 +188,10 @@ describe "Customers API" do
 
     get "/api/v1/customers/#{customer.id}/favorite_merchant"
 
-    fav = m1
-
     expect(response).to be_successful
 
     merch = JSON.parse(response.body)
 
-    expect(merch["data"][0]["id"].to_i).to eq(m1.id)
+    expect(merch["data"]["id"].to_i).to eq(m1.id)
   end
 end

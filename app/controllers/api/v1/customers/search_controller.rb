@@ -2,7 +2,7 @@ class Api::V1::Customers::SearchController < ApplicationController
 
   def index
     if params[:id]
-      render json: CustomerSerializer.new(Customer.find_by(id: params[:id]))
+      render json: CustomerSerializer.new(Customer.where(id: params[:id]))
     elsif params[:first_name]
       render json: CustomerSerializer.new(Customer.where(first_name: params[:first_name]))
     elsif params[:last_name]
