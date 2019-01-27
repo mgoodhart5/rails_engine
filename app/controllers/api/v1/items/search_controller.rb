@@ -9,6 +9,8 @@ class Api::V1::Items::SearchController < ApplicationController
       render json: ItemSerializer.new(Item.where(created_at: params[:created_at]))
     elsif params[:updated_at]
       render json: ItemSerializer.new(Item.where(updated_at: params[:updated_at]))
+    elsif params[:merchant]
+      render json: ItemSerializer.new(Item.where(merchant: params[:merchant]))
     end
   end
 
