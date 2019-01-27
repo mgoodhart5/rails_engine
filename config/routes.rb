@@ -43,6 +43,7 @@ Rails.application.routes.draw do
         get '/find_all', to: "search#index"
         get '/random', to: "random#show"
         get '/:id/invoice', to: "invoice#show"
+        get '/:id/item', to: "item#show"
       end
       namespace :transactions do
         get '/find', to: "search#show"
