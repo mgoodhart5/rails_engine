@@ -14,6 +14,7 @@ class Item < ApplicationRecord
     .where("transactions.result = 0")
     .order("revenue desc")
     .limit(x)
+
   end
 
   def self.most_items(x)
