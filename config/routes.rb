@@ -19,7 +19,12 @@ Rails.application.routes.draw do
         get '/:id/favorite_customer', to: "favorite_customer#show"
       end
       namespace :items do
+        get '/most_revenue', to: "most_revenue#index"
+        get '/most_items', to: "most_items#index"
         get '/:id/best_day', to: "best_day#show"
+        get '/random', to: "random#show"
+        get '/find', to: "search#show"
+        get '/find_all', to: "search#index"
       end
       resources :customers, only: [:index, :show]
       resources :merchants, only: [:index, :show]

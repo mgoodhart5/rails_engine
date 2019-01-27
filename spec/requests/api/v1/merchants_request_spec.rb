@@ -193,7 +193,9 @@ describe "Merchants API" do
     get "/api/v1/merchants/most_items?quantity=#{x1}"
 
     merchants = JSON.parse(response.body)
+
     expect(response).to be_successful
+
     expect(merchants["data"].count).to eq(x1)
   end
   it 'returns total merchants who sold on X date' do
@@ -229,7 +231,7 @@ describe "Merchants API" do
 
     expect(response).to be_successful
 
-    expect(merchants["data"]["revenue_per_date"]["all_merchants"]).to eq(Merchant.revenue(x1))
+    expect(merchants["data"]["attributes"]["revenue"]).to eq(Merchant.revenue(x1))
   end
   it "returns the total revenue for a single merchant successful transaction" do
     m1 = create(:merchant)
@@ -258,7 +260,7 @@ describe "Merchants API" do
 
     expect(response).to be_successful
 
-    expect(merchant["data"]["id"]).to eq(m1.id)
+    expect(merchant["data"]["id"]).to eq(m1.name)
   end
   it "returns the favorite customer for a single merchant" do
     m1 = create(:merchant)
