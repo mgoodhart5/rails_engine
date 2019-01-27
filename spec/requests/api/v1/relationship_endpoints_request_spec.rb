@@ -19,7 +19,7 @@ describe 'merchants nested API' do
     expect(response).to be_successful
 
     expect(items["data"].count).to eq(x)
-    expect(items["data"][0]["attributes"]["merchant_id"].to_i).to eq(m1.id)
+    expect(items["data"][0]["type"]).to eq("associated_item")
   end
   it 'returns a collection of items associated with that merchant' do
     m1, m2 = create_list(:merchant, 2)
@@ -42,7 +42,8 @@ describe 'merchants nested API' do
     expect(response).to be_successful
 
     expect(invoices["data"].count).to eq(x)
-    expect(invoices["data"][0]["attributes"]["merchant_id"].to_i).to eq(m1.id)
+
+    expect(invoices["data"][0]["type"]).to eq("associated_invoice")
   end
   it 'returns a collection of transactions associated with that invoice' do
     m1, m2 = create_list(:merchant, 2)
