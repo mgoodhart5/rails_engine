@@ -77,7 +77,7 @@ RSpec.describe Item, type: :model do
     expect(answer[0]).to eq(item_1)
     expect(answer[1]).to eq(item_3)
     expect(answer[2]).to eq(item_5)
-  end
+end
   describe 'instance methods' do
     it "#best day" do
       m1, m2 = create_list(:merchant, 2)
