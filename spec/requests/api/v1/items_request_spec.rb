@@ -110,7 +110,7 @@ describe "Items API" do
     item_2  = create(:item, name: "Perez", merchant: m1)
     item_3  = create(:item, name: "Smith", merchant: m1)
 
-    get "/api/v1/items/find_all?merchant=#{m1.id}"
+    get "/api/v1/items/find_all?merchant_id=#{m1.id}"
 
     expect(response).to be_successful
 

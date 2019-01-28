@@ -43,7 +43,7 @@ describe "Transactions API" do
 
     transaction = JSON.parse(response.body)
 
-    expect(transaction["data"][0]["attributes"]["result"]).to eq(result)
+    expect(transaction["data"]["attributes"]["result"]).to eq(result)
   end
   it "can find a transaction by created at" do
     transaction_1 = create(:transaction, created_at: "2012-03-27 14:54:09 UTC")
