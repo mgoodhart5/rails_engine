@@ -97,9 +97,9 @@ describe "Invoices API" do
     invoice_2  = create(:invoice, merchant: m1)
     invoice_3  = create(:invoice, merchant: m1)
 
-    get "/api/v1/invoices/find_all?merchant=#{m1.id}"
+    get "/api/v1/invoices/find_all?merchant_id=#{m1.id}"
 
-    expect(response).to be_successful
+    expect(status).to eq(200)
 
     invoices = JSON.parse(response.body)
 
@@ -111,7 +111,7 @@ describe "Invoices API" do
     invoice_2  = create(:invoice, merchant: m1)
     invoice_3  = create(:invoice, merchant: m1)
 
-    get "/api/v1/invoices/find_all?merchant=#{m1.id}"
+    get "/api/v1/invoices/find_all?merchant_id=#{m1.id}"
 
     expect(response).to be_successful
 

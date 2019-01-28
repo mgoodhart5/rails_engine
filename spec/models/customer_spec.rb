@@ -32,9 +32,9 @@ RSpec.describe Customer, type: :model do
       transaction_3 = create(:transaction, invoice_id: invoice_3.id, result: "success")
 
       fav = m1
-
-      expect(customer.favorite_merchant).to eq([fav])
-      expect(customer.favorite_merchant).to_not eq([m2])
+      # binding.pry
+      expect(customer.favorite_merchant[0]).to eq(fav)
+      expect(customer.favorite_merchant[0]).to_not eq(m2)
     end
     it '#all_transactions' do
       m1, m2 = create_list(:merchant, 2)

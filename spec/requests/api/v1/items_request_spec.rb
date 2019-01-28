@@ -110,7 +110,7 @@ describe "Items API" do
     item_2  = create(:item, name: "Perez", merchant: m1)
     item_3  = create(:item, name: "Smith", merchant: m1)
 
-    get "/api/v1/items/find_all?merchant=#{m1.id}"
+    get "/api/v1/items/find_all?merchant_id=#{m1.id}"
 
     expect(response).to be_successful
 
@@ -172,7 +172,7 @@ describe "Items API" do
 
     expect(response).to be_successful
 
-    expect(item["data"][0]["attributes"]["updated_at"][0..9]).to eq(date[0..9])
+    expect(item["data"]["attributes"]["best_day"][0..9]).to eq(date[0..9])
     #this is not a cute test
   end
   it '.most_revenue' do

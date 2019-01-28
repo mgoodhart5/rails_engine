@@ -33,7 +33,6 @@ class Item < ApplicationRecord
     .where("invoice_items.item_id = #{self.id}")
     .group("invoices.id")
     .order("invoice_amount desc")
-    .limit(1)
   end
 
 end

@@ -43,7 +43,7 @@ describe "Invoice_items API" do
 
     invoice_items = JSON.parse(response.body)
 
-    expect(invoice_items["data"][0]["attributes"]["quantity"]).to eq(quantity)
+    expect(invoice_items["data"]["attributes"]["quantity"]).to eq(quantity)
   end
   it "can find a invoice_item by created at" do
     invoice_item_1 = create(:invoice_item, created_at: "2012-03-27 14:54:09 UTC")
@@ -54,7 +54,7 @@ describe "Invoice_items API" do
 
     invoice_item = JSON.parse(response.body)
 
-    expect(invoice_item["data"][0]["id"].to_i).to eq(invoice_item_1.id)
+    expect(invoice_item["data"]["id"].to_i).to eq(invoice_item_1.id)
   end
   it "can find a invoice_item by updated at" do
     invoice_item_1 = create(:invoice_item, updated_at: "2012-03-27 14:54:10 UTC")
@@ -65,7 +65,7 @@ describe "Invoice_items API" do
 
     invoice_item = JSON.parse(response.body)
 
-    expect(invoice_item["data"][0]["id"].to_i).to eq(invoice_item_1.id)
+    expect(invoice_item["data"]["id"].to_i).to eq(invoice_item_1.id)
   end
   it "can find all invoice_item by created at" do
     invoice_item_1 = create(:invoice_item, created_at: "2012-03-27 14:54:09 UTC")
@@ -95,13 +95,12 @@ describe "Invoice_items API" do
   end
   it "can find all invoice_items by item_id" do
     i_1, i_2 = create_list(:item, 2)
-    # binding.pry
     invoice_item_1  = create(:invoice_item, item: i_1)
     invoice_item_2  = create(:invoice_item, item: i_1)
     invoice_item_3  = create(:invoice_item, item: i_1)
     invoice_item_4  = create(:invoice_item, item: i_2)
 
-    get "/api/v1/invoice_items/find_all?item=#{i_1.id}"
+    get "/api/v1/invoice_items/find_all?item_id=#{i_1.id}"
 
     expect(response).to be_successful
 

@@ -43,7 +43,7 @@ describe "Transactions API" do
 
     transaction = JSON.parse(response.body)
 
-    expect(transaction["data"][0]["attributes"]["result"]).to eq(result)
+    expect(transaction["data"]["attributes"]["result"]).to eq(result)
   end
   it "can find a transaction by created at" do
     transaction_1 = create(:transaction, created_at: "2012-03-27 14:54:09 UTC")
@@ -54,7 +54,7 @@ describe "Transactions API" do
 
     transaction = JSON.parse(response.body)
 
-    expect(transaction["data"][0]["id"].to_i).to eq(transaction_1.id)
+    expect(transaction["data"]["id"].to_i).to eq(transaction_1.id)
   end
   it "can find a transaction by updated at" do
     transaction_1 = create(:transaction, updated_at: "2012-03-27 14:54:10 UTC")
@@ -65,7 +65,7 @@ describe "Transactions API" do
 
     transaction = JSON.parse(response.body)
 
-    expect(transaction["data"][0]["id"].to_i).to eq(transaction_1.id)
+    expect(transaction["data"]["id"].to_i).to eq(transaction_1.id)
   end
   it "can find all transaction by created at" do
     transaction_1 = create(:transaction, created_at: "2012-03-27 14:54:09 UTC")

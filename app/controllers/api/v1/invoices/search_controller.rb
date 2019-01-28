@@ -11,8 +11,8 @@ class Api::V1::Invoices::SearchController < ApplicationController
       render json: InvoiceSerializer.new(Invoice.where(updated_at: params[:updated_at]))
     elsif params[:customer]
       render json: InvoiceSerializer.new(Invoice.where(created_at: params[:created_at]))
-    elsif params[:merchant]
-      render json: InvoiceSerializer.new(Invoice.where(merchant: params[:merchant]))
+    elsif params[:merchant_id]
+      render json: InvoiceSerializer.new(Invoice.where(merchant_id: params[:merchant_id]))
     end
   end
 
@@ -25,10 +25,10 @@ class Api::V1::Invoices::SearchController < ApplicationController
       render json: InvoiceSerializer.new(Invoice.where(created_at: params[:created_at]).first)
     elsif params[:updated_at]
       render json: InvoiceSerializer.new(Invoice.where(updated_at: params[:updated_at]).first)
-    elsif params[:customer]
-      render json: InvoiceSerializer.new(Invoice.where(customer: params[:customer]).first)
-    elsif params[:merchant]
-      render json: InvoiceSerializer.new(Invoice.where(merchant: params[:merchant]).first)
+    elsif params[:customer_id]
+      render json: InvoiceSerializer.new(Invoice.where(customer_id: params[:customer_id]).first)
+    elsif params[:merchant_id]
+      render json: InvoiceSerializer.new(Invoice.where(merchant_id: params[:merchant_id]).first)
     end
   end
 end

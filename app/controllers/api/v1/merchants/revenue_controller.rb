@@ -8,7 +8,7 @@ class Api::V1::Merchants::RevenueController < ApplicationController
   def show
     merchant = Merchant.find(params[:id])
     total_revenue = merchant.total_revenue
-    total_revenue_obj = Revenue.new("#{merchant.name}", total_revenue)
+    total_revenue_obj = Revenue.new("#{merchant.id}", total_revenue)
     render json: TotalRevenueSerializer.new(total_revenue_obj)
   end
 

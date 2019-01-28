@@ -12,7 +12,6 @@ class Customer < ApplicationRecord
     .group("merchants.id")
     .order("transaction_amount desc")
     .where("invoices.customer_id = #{self.id}")
-    .limit(1)
   end
 
   def all_transactions

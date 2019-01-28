@@ -2,7 +2,7 @@ class Api::V1::Merchants::SearchController < ApplicationController
 
   def index
     if params[:id]
-      render json: MerchantSerializer.new(Merchant.find(params[:id]))
+      render json: MerchantSerializer.new(Merchant.where(id: params[:id]))
     elsif params[:name]
       render json: MerchantSerializer.new(Merchant.where(name: params[:name]))
     elsif params[:created_at]
@@ -23,5 +23,5 @@ class Api::V1::Merchants::SearchController < ApplicationController
       render json: MerchantSerializer.new(Merchant.where(updated_at: params[:updated_at]).first)
     end
   end
-  
+
 end

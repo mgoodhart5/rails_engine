@@ -260,7 +260,7 @@ describe "Merchants API" do
 
     expect(response).to be_successful
 
-    expect(merchant["data"]["id"]).to eq(m1.name)
+    expect(merchant["data"]["id"].to_i).to eq(m1.id)
   end
   it "returns the favorite customer for a single merchant" do
     m1 = create(:merchant)
